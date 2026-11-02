@@ -1,0 +1,2937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#fbe6ed" />
+  <meta name="description" content="15题生成你的亲密关系完整画像，看见你的爱情短板。" />
+  <title>爱情短板测试 · 恋爱情绪画像</title>
+  <style>
+    :root {
+      --ink: #4b2736;
+      --ink-soft: #6d4655;
+      --muted: #9f7786;
+      --rose: #c3617f;
+      --rose-deep: #b64a6c;
+      --rose-light: #efb8c8;
+      --blush: #f9e4eb;
+      --line: rgba(196, 118, 140, 0.16);
+      --serif: "Songti SC", "STSong", "Noto Serif CJK SC", "Noto Serif SC", "SimSun", serif;
+      --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      --shadow-card: 0 24px 70px rgba(164, 82, 109, 0.12);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100svh;
+      overflow-x: hidden;
+      color: var(--ink);
+      background: #fff7fa;
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      border: 0;
+      font: inherit;
+      color: inherit;
+      background: none;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: default;
+    }
+
+    img,
+    svg {
+      display: block;
+    }
+
+    ::selection {
+      color: #fff;
+      background: rgba(184, 74, 107, 0.7);
+    }
+
+    :focus-visible {
+      outline: 3px solid rgba(184, 74, 107, 0.38);
+      outline-offset: 3px;
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    /* ---------- 背景氛围 ---------- */
+    .atmosphere {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      background:
+        radial-gradient(90% 64% at 50% -10%, rgba(252, 218, 229, 0.92) 0%, rgba(253, 235, 240, 0.64) 45%, rgba(255, 250, 251, 0) 78%),
+        linear-gradient(175deg, #fce9ef 0%, #fff6f9 38%, #fffdfd 76%, #fff9fb 100%);
+    }
+
+    .atmosphere::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.42;
+      background-image: radial-gradient(rgba(165, 101, 121, 0.085) 0.55px, transparent 0.7px);
+      background-size: 8px 8px;
+      mix-blend-mode: multiply;
+    }
+
+    .cloud {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(10px);
+      will-change: transform;
+    }
+
+    .cloud--one {
+      top: -24%;
+      left: -30%;
+      width: min(92vw, 620px);
+      height: min(76vw, 500px);
+      background: radial-gradient(closest-side, rgba(247, 192, 210, 0.68), rgba(247, 192, 210, 0));
+    }
+
+    .cloud--two {
+      top: -14%;
+      right: -32%;
+      width: min(88vw, 580px);
+      height: min(72vw, 470px);
+      background: radial-gradient(closest-side, rgba(255, 210, 224, 0.68), rgba(255, 210, 224, 0));
+    }
+
+    .cloud--three {
+      top: 40%;
+      left: -44%;
+      width: min(96vw, 660px);
+      height: min(74vw, 500px);
+      background: radial-gradient(closest-side, rgba(255, 228, 237, 0.64), rgba(255, 228, 237, 0));
+    }
+
+    .cloud--four {
+      right: -34%;
+      bottom: -8%;
+      width: min(86vw, 580px);
+      height: min(70vw, 460px);
+      background: radial-gradient(closest-side, rgba(249, 213, 225, 0.52), rgba(249, 213, 225, 0));
+    }
+
+    .petal-dust {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(206, 124, 148, 0.24);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+    }
+
+    .petal-dust:nth-child(5) { top: 13%; left: 10%; width: 3px; height: 3px; }
+    .petal-dust:nth-child(6) { top: 23%; right: 8%; width: 5px; height: 5px; opacity: 0.7; }
+    .petal-dust:nth-child(7) { top: 57%; left: 5%; width: 3px; height: 3px; opacity: 0.6; }
+    .petal-dust:nth-child(8) { top: 71%; right: 6%; width: 4px; height: 4px; opacity: 0.55; }
+    .petal-dust:nth-child(9) { bottom: 12%; left: 13%; width: 3px; height: 3px; opacity: 0.5; }
+
+    /* ---------- 页面框架 ---------- */
+    .app {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 460px);
+      min-height: 100svh;
+      margin: 0 auto;
+      padding:
+        max(22px, env(safe-area-inset-top))
+        clamp(22px, 6.7vw, 30px)
+        max(24px, calc(env(safe-area-inset-bottom) + 16px));
+    }
+
+    .screen {
+      position: relative;
+      width: 100%;
+      animation: screen-in 0.55s cubic-bezier(0.22, 0.82, 0.28, 1) both;
+    }
+
+    .screen[hidden] {
+      display: none !important;
+    }
+
+    @keyframes screen-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---------- 封面 ---------- */
+    .screen--landing {
+      display: flex;
+      flex-direction: column;
+      min-height: calc(100svh - max(46px, env(safe-area-inset-top) + env(safe-area-inset-bottom)));
+      padding-top: clamp(8px, 3.2vh, 26px);
+      padding-bottom: 16px;
+    }
+
+    .brand-row {
+      display: flex;
+      justify-content: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 31px;
+      padding: 6px 21px;
+      border: 1px solid rgba(255, 255, 255, 0.94);
+      border-radius: 999px;
+      color: #b65b77;
+      background: rgba(255, 255, 255, 0.64);
+      box-shadow: 0 7px 22px rgba(172, 88, 114, 0.065), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      white-space: nowrap;
+    }
+
+    .display-title {
+      margin-top: clamp(14px, 2.4vh, 22px);
+      text-align: center;
+      color: #b64969;
+      font-family: var(--serif);
+      font-size: clamp(44px, 13.1vw, 60px);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: 0.01em;
+      background: linear-gradient(126deg, #b34766 4%, #c56882 42%, #ab3f60 78%, #c76a84 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 0 rgba(255, 255, 255, 0.5));
+      text-wrap: balance;
+    }
+
+    .hero-subtitle {
+      margin-top: clamp(9px, 1.7vh, 15px);
+      color: #57303f;
+      font-size: clamp(13px, 3.65vw, 15px);
+      font-weight: 500;
+      line-height: 1.6;
+      letter-spacing: 0.055em;
+      text-align: center;
+    }
+
+    .hero-card {
+      position: relative;
+      margin-top: clamp(20px, 3.4vh, 28px);
+      padding: 11px 15px 15px;
+      border: 1px solid rgba(255, 255, 255, 0.96);
+      border-radius: 34px;
+      background:
+        radial-gradient(120% 90% at 50% 0%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.18) 58%),
+        linear-gradient(155deg, rgba(255, 255, 255, 0.48), rgba(255, 249, 251, 0.74));
+      box-shadow:
+        0 26px 62px rgba(166, 85, 111, 0.11),
+        0 2px 6px rgba(166, 85, 111, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.62);
+      border-radius: 27px;
+      pointer-events: none;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 18%;
+      width: 64%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.96), transparent);
+      pointer-events: none;
+    }
+
+    .heart-stage {
+      position: relative;
+      display: grid;
+      place-items: center;
+      height: clamp(174px, 24.6vh, 214px);
+      isolation: isolate;
+    }
+
+    .heart-stage::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 76%;
+      height: 62%;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 70%);
+      filter: blur(7px);
+    }
+
+    .heart-art {
+      width: min(76%, 242px);
+      height: auto;
+      overflow: visible;
+      filter: drop-shadow(0 18px 20px rgba(183, 104, 127, 0.12));
+      animation: heart-float 6.5s ease-in-out infinite;
+    }
+
+    @keyframes heart-float {
+      0%, 100% { transform: translateY(0) rotate(-0.3deg); }
+      50% { transform: translateY(-6px) rotate(0.4deg); }
+    }
+
+    .type-panel {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 13px;
+      border: 1px solid rgba(248, 222, 231, 0.82);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.54);
+      box-shadow:
+        0 9px 24px rgba(171, 94, 118, 0.055),
+        inset 0 1px 0 rgba(255, 255, 255, 0.94);
+    }
+
+    .type-chip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-width: 0;
+      min-height: 38px;
+      padding: 8px 9px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 999px;
+      color: #5a3342;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      font-size: clamp(11.5px, 3.15vw, 13px);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+    .type-chip:nth-child(1) {
+      background: linear-gradient(100deg, rgba(248, 202, 215, 0.74), rgba(255, 241, 246, 0.62));
+      color: #7c3e52;
+    }
+
+    .type-chip:nth-child(2) {
+      background: linear-gradient(100deg, rgba(220, 237, 244, 0.74), rgba(255, 249, 250, 0.66));
+      color: #526a75;
+    }
+
+    .type-chip:nth-child(3) {
+      background: linear-gradient(100deg, rgba(232, 225, 248, 0.78), rgba(255, 248, 252, 0.66));
+      color: #655878;
+    }
+
+    .type-chip:nth-child(4) {
+      background: linear-gradient(100deg, rgba(249, 236, 214, 0.78), rgba(255, 250, 246, 0.66));
+      color: #7b6240;
+    }
+
+    .type-chip svg {
+      flex: 0 0 auto;
+      width: 16px;
+      height: 16px;
+      opacity: 0.72;
+    }
+
+    .type-chip:nth-child(1) svg { color: #c1748b; }
+    .type-chip:nth-child(2) svg { color: #8da5b2; }
+    .type-chip:nth-child(3) svg { color: #9b8bb5; }
+    .type-chip:nth-child(4) svg { color: #c2a06b; }
+
+    .hero-cta {
+      align-self: center;
+      width: min(100%, 82%);
+      margin-top: auto;
+      padding-top: clamp(22px, 4.6vh, 38px);
+    }
+
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 55px;
+      padding: 14px 24px;
+      overflow: hidden;
+      border-radius: 999px;
+      font-size: 16.5px;
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: 0.13em;
+      transition: transform 0.2s ease, box-shadow 0.25s ease, opacity 0.2s ease;
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 9%;
+      width: 82%;
+      height: 52%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+
+    .btn--primary {
+      color: #fff;
+      background: linear-gradient(101deg, #efb4c5 0%, #df92a8 25%, #cf718e 64%, #c35678 100%);
+      box-shadow:
+        0 16px 31px rgba(184, 78, 108, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.38);
+      text-shadow: 0 1px 2px rgba(137, 49, 76, 0.18);
+    }
+
+    .btn--primary:hover {
+      box-shadow:
+        0 19px 36px rgba(184, 78, 108, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.42);
+    }
+
+    .btn:not(:disabled):active {
+      transform: translateY(1px) scale(0.992);
+    }
+
+    .btn.is-loading {
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    .btn.is-loading::after {
+      content: "";
+      width: 15px;
+      height: 15px;
+      margin-left: 9px;
+      border: 1.5px solid rgba(255, 255, 255, 0.45);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .disclaimer {
+      margin-top: 15px;
+      color: #a98390;
+      font-size: 11.5px;
+      line-height: 1.6;
+      letter-spacing: 0.045em;
+      text-align: center;
+    }
+
+    .float-heart {
+      position: absolute;
+      z-index: 0;
+      color: rgba(217, 139, 162, 0.42);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: var(--size, 20px);
+      line-height: 1;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+      transform: rotate(var(--rot, 12deg));
+      pointer-events: none;
+      user-select: none;
+      animation: float-heart 7s ease-in-out infinite;
+    }
+
+    .float-heart--one { top: 12%; right: 1%; --size: 20px; --rot: 19deg; animation-delay: -1.8s; }
+    .float-heart--two { top: 37%; left: -1.5%; --size: 14px; --rot: -18deg; opacity: 0.6; animation-delay: -3.2s; }
+    .float-heart--three { top: 58%; right: 0.5%; --size: 12px; --rot: 8deg; opacity: 0.64; animation-delay: -5s; }
+    .float-heart--four { bottom: 9%; left: 3%; --size: 23px; --rot: -10deg; opacity: 0.36; animation-delay: -2.4s; }
+    .float-heart--five { bottom: 25%; right: 2%; --size: 16px; --rot: 23deg; opacity: 0.38; }
+
+    @keyframes float-heart {
+      0%, 100% { transform: translateY(0) rotate(var(--rot, 12deg)); }
+      50% { transform: translateY(-9px) rotate(calc(var(--rot, 12deg) + 5deg)); }
+    }
+
+    /* ---------- 答题页 ---------- */
+    .screen--quiz {
+      padding-top: clamp(4px, 1.8vh, 16px);
+    }
+
+    .quiz-head {
+      text-align: center;
+    }
+
+    .quiz-head .eyebrow {
+      min-height: 29px;
+      padding: 5px 19px;
+      font-size: 11px;
+    }
+
+    .quiz-title {
+      margin-top: clamp(11px, 2vh, 17px);
+      color: #b64567;
+      font-family: var(--serif);
+      font-size: clamp(36px, 10.6vw, 48px);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: 0.01em;
+      text-align: center;
+      background: linear-gradient(124deg, #b34766 7%, #c96e87 52%, #ad4161 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 0 rgba(255, 255, 255, 0.42));
+    }
+
+    .quiz-counter {
+      margin-top: 9px;
+      color: #5e3544;
+      font-size: 13px;
+      line-height: 1.7;
+      letter-spacing: 0.12em;
+    }
+
+    .quiz-counter .number {
+      display: inline-block;
+      min-width: 1.2em;
+      color: #743047;
+      font-family: var(--serif);
+      font-size: 1.35em;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      vertical-align: -0.04em;
+    }
+
+    .quiz-counter .slash {
+      padding: 0 3px;
+      color: #b48a97;
+      font-family: var(--serif);
+      font-weight: 400;
+    }
+
+    .quiz-card {
+      position: relative;
+      margin-top: clamp(17px, 2.8vh, 24px);
+      padding: 22px 18px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.94);
+      border-radius: 34px;
+      background:
+        radial-gradient(115% 55% at 50% 0%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 52%, rgba(255, 255, 255, 0.78) 100%),
+        rgba(255, 255, 255, 0.82);
+      box-shadow:
+        0 27px 65px rgba(168, 87, 113, 0.13),
+        0 3px 8px rgba(168, 87, 113, 0.035),
+        inset 0 1px 0 rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .quiz-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 17%;
+      width: 66%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.98), transparent);
+      pointer-events: none;
+    }
+
+    .progress-head {
+      position: relative;
+      margin-bottom: 9px;
+      color: #8c6372;
+      font-size: 12px;
+      line-height: 1.5;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+
+    .progress-percent {
+      position: absolute;
+      top: 50%;
+      right: 1px;
+      color: #563140;
+      font-family: var(--serif);
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transform: translateY(-50%);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(248, 224, 232, 0.9);
+      box-shadow: inset 0 1px 2px rgba(170, 111, 128, 0.08);
+    }
+
+    .progress-fill {
+      position: relative;
+      width: 6.67%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #f4bfce 0%, #dc8da4 58%, #cf7b94 100%);
+      box-shadow: 0 1px 3px rgba(191, 97, 124, 0.18);
+      transition: width 0.55s cubic-bezier(0.22, 0.8, 0.24, 1);
+    }
+
+    .progress-fill::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.3) 46%, transparent 74%);
+      animation: progress-shine 2.8s ease-in-out infinite;
+    }
+
+    @keyframes progress-shine {
+      0%, 55% { transform: translateX(-100%); }
+      90%, 100% { transform: translateX(100%); }
+    }
+
+    .question-stage {
+      padding-top: clamp(19px, 3.2vh, 27px);
+    }
+
+    .question-stage.is-swapping {
+      animation: question-swap 0.34s cubic-bezier(0.22, 0.8, 0.3, 1) both;
+    }
+
+    @keyframes question-swap {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-title {
+      max-width: 19em;
+      margin: 0 auto clamp(18px, 2.7vh, 23px);
+      color: #4d2838;
+      font-size: clamp(19px, 5.15vw, 22px);
+      font-weight: 600;
+      line-height: 1.58;
+      letter-spacing: 0.018em;
+      text-align: center;
+      text-wrap: balance;
+    }
+
+    .question-title:focus {
+      outline: none;
+    }
+
+    .option-list {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .option-list.is-nudging {
+      animation: nudge 0.4s ease both;
+    }
+
+    @keyframes nudge {
+      0%, 100% { transform: translateX(0); }
+      22% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-3px); }
+    }
+
+    .option {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      width: 100%;
+      min-height: 62px;
+      padding: 13px 17px;
+      border: 1px solid rgba(242, 208, 219, 0.9);
+      border-radius: 999px;
+      color: #4d2838;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow:
+        0 9px 21px rgba(168, 96, 119, 0.065),
+        inset 0 1px 0 rgba(255, 255, 255, 0.98);
+      text-align: left;
+      font-size: clamp(13px, 3.52vw, 14.5px);
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.01em;
+      transition:
+        border-color 0.22s ease,
+        background 0.22s ease,
+        box-shadow 0.22s ease,
+        transform 0.18s ease;
+    }
+
+    .option:hover {
+      border-color: rgba(220, 157, 176, 0.82);
+      background: rgba(255, 250, 252, 0.98);
+    }
+
+    .option:active {
+      transform: scale(0.986);
+    }
+
+    .option.is-selected {
+      border-color: rgba(193, 91, 121, 0.7);
+      background: linear-gradient(101deg, rgba(255, 245, 249, 0.99), rgba(255, 252, 253, 0.99));
+      box-shadow:
+        0 0 0 3px rgba(199, 101, 130, 0.105),
+        0 12px 24px rgba(175, 88, 115, 0.115),
+        inset 0 1px 0 rgba(255, 255, 255, 0.98);
+    }
+
+    .option-letter {
+      display: grid;
+      flex: 0 0 33px;
+      width: 33px;
+      height: 33px;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(145deg, #f7c8d6, #e9a9bd);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.58),
+        0 3px 8px rgba(203, 122, 146, 0.16);
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 600;
+      transition: background 0.22s ease, transform 0.22s ease;
+    }
+
+    .option.is-selected .option-letter {
+      background: linear-gradient(145deg, #dd87a0, #bc4f70);
+      transform: scale(1.035);
+    }
+
+    .option-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .option.is-selected .option-text {
+      color: #40202f;
+    }
+
+    .quiz-continue {
+      margin-top: clamp(21px, 3.2vh, 27px);
+      min-height: 54px;
+      font-size: 15.5px;
+      letter-spacing: 0.16em;
+    }
+
+    /* ---------- 结果页 ---------- */
+    .screen--result {
+      padding-top: 4px;
+      padding-bottom: max(4px, env(safe-area-inset-bottom));
+    }
+
+    .svg-sprite {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .blossom {
+      position: absolute;
+      z-index: 0;
+      width: min(72vw, 296px);
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .blossom--left {
+      top: -58px;
+      left: -62px;
+      opacity: 0.76;
+      transform: rotate(-13deg);
+    }
+
+    .blossom--right {
+      top: -48px;
+      right: -72px;
+      opacity: 0.64;
+      transform: rotate(-9deg) scaleX(-1);
+    }
+
+    #resultCapture,
+    .result-actions,
+    .result-footnote {
+      position: relative;
+      z-index: 1;
+    }
+
+    .result-head {
+      padding-top: 22px;
+      text-align: center;
+    }
+
+    .result-title {
+      color: #883b53;
+      font-family: var(--serif);
+      font-size: clamp(25px, 7.2vw, 31px);
+      font-weight: 600;
+      line-height: 1.38;
+      letter-spacing: 0.018em;
+      text-align: center;
+      text-wrap: balance;
+    }
+
+    .result-subtitle {
+      margin-top: 7px;
+      color: #a17382;
+      font-size: 13px;
+      line-height: 1.6;
+      letter-spacing: 0.18em;
+    }
+
+    .result-type {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 126px;
+      min-height: 37px;
+      margin-top: 13px;
+      padding: 7px 23px;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(100deg, #eba7bb 0%, #d97b96 54%, #ce6c88 100%);
+      box-shadow:
+        0 9px 21px rgba(185, 81, 110, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.33);
+      font-size: 13.5px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0.09em;
+      text-shadow: 0 1px 2px rgba(141, 55, 81, 0.15);
+    }
+
+    .score-summary {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 21px;
+      padding: 0 4px;
+    }
+
+    .score-main {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .score-label {
+      color: #7d5261;
+      font-size: 12.5px;
+      line-height: 1.5;
+      letter-spacing: 0.04em;
+    }
+
+    .score-main strong {
+      color: #9e3e5b;
+      font-family: var(--serif);
+      font-size: 31px;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.01em;
+    }
+
+    .score-versus {
+      padding-bottom: 2px;
+      color: #916a78;
+      font-size: 11px;
+      line-height: 1.55;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .score-versus strong {
+      color: #a24761;
+      font-family: var(--serif);
+      font-size: 15.5px;
+      font-weight: 600;
+    }
+
+    .analysis {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.88fr);
+      align-items: center;
+      gap: 2px;
+      margin-top: 13px;
+    }
+
+    .radar-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .radar-wrap svg {
+      width: 100%;
+      height: auto;
+      max-width: 238px;
+      overflow: visible;
+    }
+
+    .radar-grid {
+      fill: none;
+      stroke: rgba(193, 139, 156, 0.25);
+      stroke-width: 0.8;
+    }
+
+    .radar-axis {
+      stroke: rgba(193, 139, 156, 0.2);
+      stroke-width: 0.75;
+    }
+
+    .radar-area {
+      fill: rgba(190, 91, 118, 0.19);
+      stroke: rgba(177, 75, 104, 0.67);
+      stroke-width: 1.4;
+      stroke-linejoin: round;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+    }
+
+    .radar-area.is-ready {
+      opacity: 1;
+    }
+
+    .radar-dot {
+      fill: #c15b79;
+      stroke: rgba(255, 255, 255, 0.94);
+      stroke-width: 1.2;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .radar-dot.is-ready {
+      opacity: 1;
+    }
+
+    .radar-label {
+      fill: #835363;
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: 0.02em;
+      paint-order: stroke;
+      stroke: rgba(255, 250, 252, 0.88);
+      stroke-width: 2.5px;
+      stroke-linejoin: round;
+    }
+
+    .dim-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding-right: 1px;
+    }
+
+    .dim-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 5px;
+      margin-bottom: 4px;
+      color: #724a5a;
+      font-size: 11px;
+      line-height: 1.35;
+      letter-spacing: 0.01em;
+    }
+
+    .dim-score {
+      color: #5e3042;
+      font-family: var(--serif);
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .dim-track {
+      width: 100%;
+      height: 5px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(249, 226, 234, 0.86);
+      box-shadow: inset 0 1px 1px rgba(171, 116, 133, 0.06);
+    }
+
+    .dim-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #f3c5d2, #db91a7 62%, #ca7690);
+      transition: width 0.9s cubic-bezier(0.22, 0.8, 0.26, 1);
+    }
+
+    .relation-card {
+      position: relative;
+      margin-top: 20px;
+      padding: 20px 16px 17px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 26px;
+      background:
+        radial-gradient(130% 70% at 70% 0%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.08) 74%),
+        linear-gradient(150deg, rgba(255, 255, 255, 0.68), rgba(255, 249, 251, 0.54));
+      box-shadow:
+        0 22px 52px rgba(169, 94, 117, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .relation-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 16%;
+      width: 68%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.98), transparent);
+      pointer-events: none;
+    }
+
+    .relation-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #883d55;
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: 0.015em;
+    }
+
+    .relation-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(190, 118, 139, 0.24), rgba(190, 118, 139, 0));
+    }
+
+    .relation-summary {
+      margin: 11px 0 15px;
+      color: #5e3c49;
+      font-size: 12.5px;
+      line-height: 1.95;
+      letter-spacing: 0.012em;
+      text-wrap: pretty;
+    }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .insight {
+      min-width: 0;
+      min-height: 114px;
+      padding: 11px 9px 12px;
+      border: 1px solid rgba(250, 230, 236, 0.94);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow:
+        0 7px 17px rgba(170, 102, 122, 0.035),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    .insight-title {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 7px;
+      color: #9e5b71;
+      font-size: 10.5px;
+      font-weight: 600;
+      line-height: 1.5;
+      letter-spacing: 0.02em;
+    }
+
+    .insight-title::before {
+      content: "";
+      flex: 0 0 5px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #e7adbf;
+      box-shadow: 0 0 0 3px rgba(231, 173, 191, 0.14);
+    }
+
+    .insight p {
+      color: #5b3946;
+      font-size: 11px;
+      line-height: 1.72;
+      letter-spacing: 0.005em;
+      text-wrap: pretty;
+    }
+
+    .match-block {
+      margin-top: 14px;
+      padding-top: 13px;
+      border-top: 1px solid rgba(227, 191, 202, 0.52);
+    }
+
+    .match-label {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 4px 12px;
+      border: 1px solid rgba(232, 205, 188, 0.68);
+      border-radius: 999px;
+      color: #9d6653;
+      background: linear-gradient(90deg, rgba(247, 232, 221, 0.78), rgba(251, 240, 244, 0.72));
+      font-size: 10.5px;
+      line-height: 1.4;
+      letter-spacing: 0.04em;
+    }
+
+    .match-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+      margin-top: 8px;
+    }
+
+    .match-pill {
+      padding: 8px 4px;
+      border: 1px solid rgba(255, 255, 255, 0.92);
+      border-radius: 999px;
+      color: #5d3948;
+      background: linear-gradient(100deg, rgba(249, 235, 240, 0.78), rgba(255, 250, 251, 0.66));
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.92),
+        0 3px 8px rgba(169, 104, 122, 0.03);
+      font-size: 11px;
+      line-height: 1.5;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
+    .result-slogan {
+      margin: 16px auto 0;
+      color: #996173;
+      font-size: 11.5px;
+      line-height: 1.8;
+      letter-spacing: 0.02em;
+      text-align: center;
+      text-wrap: balance;
+    }
+
+    .result-slogan .spark {
+      display: inline-block;
+      margin-right: 4px;
+      color: #d396a8;
+      font-family: var(--serif);
+      font-size: 13px;
+      transform: translateY(-0.5px);
+    }
+
+    .result-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .result-actions .btn {
+      min-height: 52px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      letter-spacing: 0.08em;
+    }
+
+    .btn--share {
+      border: 1px solid rgba(226, 187, 160, 0.9);
+      color: #805745;
+      background: linear-gradient(100deg, rgba(255, 255, 255, 0.88), rgba(249, 232, 220, 0.88));
+      box-shadow:
+        0 11px 25px rgba(176, 123, 100, 0.11),
+        inset 0 1px 0 rgba(255, 255, 255, 0.98);
+    }
+
+    .btn--share::before {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+    }
+
+    .btn--restart {
+      color: #fff;
+      background: linear-gradient(101deg, #eba5b9 0%, #d97c97 56%, #ca6785 100%);
+      box-shadow:
+        0 12px 26px rgba(188, 89, 117, 0.21),
+        inset 0 1px 0 rgba(255, 255, 255, 0.32);
+    }
+
+    .result-footnote {
+      margin-top: 16px;
+      color: #a78390;
+      font-size: 10.5px;
+      line-height: 1.7;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
+    /* ---------- 分享弹层 ---------- */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .modal[hidden] {
+      display: none !important;
+    }
+
+    .modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(55, 28, 39, 0.46);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      animation: fade-in 0.28s ease both;
+    }
+
+    .modal__card {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 358px);
+      max-height: min(88svh, 760px);
+      padding: 21px 18px 17px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 28px;
+      background: linear-gradient(160deg, #fffafb 0%, #fff4f7 100%);
+      box-shadow: 0 30px 70px rgba(63, 27, 41, 0.24);
+      animation: modal-in 0.36s cubic-bezier(0.22, 0.82, 0.28, 1) both;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(196, 119, 141, 0.4) transparent;
+    }
+
+    .modal__card::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .modal__card::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: rgba(196, 119, 141, 0.38);
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes modal-in {
+      from { opacity: 0; transform: translateY(18px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal__title {
+      padding: 0 34px;
+      color: #78364c;
+      font-family: var(--serif);
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1.5;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
+    .modal__hint {
+      margin-top: 5px;
+      color: #a37c89;
+      font-size: 11px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .modal__preview {
+      position: relative;
+      margin-top: 13px;
+      overflow: hidden;
+      border: 1px solid rgba(232, 202, 212, 0.8);
+      border-radius: 18px;
+      background: #fbe9ef;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .modal__preview img {
+      width: 100%;
+      height: auto;
+    }
+
+    .modal__preview img[hidden] {
+      display: none;
+    }
+
+    .modal__notice {
+      padding: 18px 14px;
+      color: #8d5a6d;
+      font-size: 11px;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    .modal__copy {
+      margin-top: 10px;
+      padding: 10px 13px;
+      border-radius: 12px;
+      background: rgba(247, 231, 237, 0.78);
+      color: #724353;
+      font-size: 10.5px;
+      line-height: 1.65;
+      text-align: center;
+    }
+
+    .modal__actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 12px;
+    }
+
+    .modal__button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 43px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .modal__button:active {
+      transform: scale(0.985);
+    }
+
+    .modal__button--primary {
+      color: #fff;
+      background: linear-gradient(100deg, #e9a1b6, #ce6b88);
+      box-shadow: 0 8px 18px rgba(187, 89, 116, 0.18);
+    }
+
+    .modal__button--ghost {
+      color: #6d4453;
+      border: 1px solid rgba(226, 200, 209, 0.9);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .modal__close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: grid;
+      width: 32px;
+      height: 32px;
+      place-items: center;
+      border-radius: 50%;
+      color: #9b7180;
+      background: rgba(247, 231, 237, 0.7);
+      font-size: 19px;
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: max(25px, calc(env(safe-area-inset-bottom) + 18px));
+      left: 50%;
+      z-index: 80;
+      max-width: min(84vw, 340px);
+      padding: 10px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(72, 38, 52, 0.82);
+      box-shadow: 0 10px 26px rgba(56, 25, 38, 0.18);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      font-size: 11.5px;
+      line-height: 1.5;
+      letter-spacing: 0.03em;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 12px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    /* ---------- 小屏适配 ---------- */
+    @media (max-width: 370px) {
+      .app {
+        padding-right: 16px;
+        padding-left: 16px;
+      }
+
+      .hero-card {
+        padding-right: 12px;
+        padding-left: 12px;
+        border-radius: 29px;
+      }
+
+      .type-panel {
+        gap: 8px;
+        padding: 10px;
+      }
+
+      .type-chip {
+        gap: 5px;
+        padding-right: 7px;
+        padding-left: 7px;
+      }
+
+      .quiz-card {
+        padding-right: 14px;
+        padding-left: 14px;
+        border-radius: 29px;
+      }
+
+      .option {
+        gap: 10px;
+        padding-right: 13px;
+        padding-left: 13px;
+      }
+
+      .result-actions .btn {
+        font-size: 13.5px;
+        letter-spacing: 0.04em;
+      }
+
+      .insight {
+        padding-right: 7px;
+        padding-left: 7px;
+      }
+
+      .insight p {
+        font-size: 10.2px;
+      }
+    }
+
+    @media (min-width: 600px) {
+      .app {
+        padding-top: 32px;
+      }
+
+      .screen--landing,
+      .screen--quiz,
+      .screen--result {
+        border-radius: 38px;
+      }
+
+      .blossom--left { left: -96px; }
+      .blossom--right { right: -98px; }
+    }
+
+    @media (max-height: 710px) {
+      .screen--landing {
+        padding-top: 0;
+      }
+
+      .heart-stage {
+        height: 164px;
+      }
+
+      .hero-card {
+        margin-top: 17px;
+      }
+
+      .hero-cta {
+        padding-top: 18px;
+      }
+
+      .quiz-card {
+        margin-top: 14px;
+        padding-top: 18px;
+      }
+
+      .question-stage {
+        padding-top: 16px;
+      }
+
+      .question-title {
+        margin-bottom: 15px;
+      }
+
+      .option-list {
+        gap: 10px;
+      }
+
+      .option {
+        min-height: 56px;
+        padding-top: 11px;
+        padding-bottom: 11px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true">
+    <span class="cloud cloud--one"></span>
+    <span class="cloud cloud--two"></span>
+    <span class="cloud cloud--three"></span>
+    <span class="cloud cloud--four"></span>
+    <span class="petal-dust"></span>
+    <span class="petal-dust"></span>
+    <span class="petal-dust"></span>
+    <span class="petal-dust"></span>
+    <span class="petal-dust"></span>
+  </div>
+
+  <svg class="svg-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <g id="sakura-flower">
+        <g fill="currentColor">
+          <ellipse cx="0" cy="-10" rx="5.6" ry="9.3"></ellipse>
+          <ellipse cx="0" cy="-10" rx="5.6" ry="9.3" transform="rotate(72)"></ellipse>
+          <ellipse cx="0" cy="-10" rx="5.6" ry="9.3" transform="rotate(144)"></ellipse>
+          <ellipse cx="0" cy="-10" rx="5.6" ry="9.3" transform="rotate(216)"></ellipse>
+          <ellipse cx="0" cy="-10" rx="5.6" ry="9.3" transform="rotate(288)"></ellipse>
+        </g>
+        <circle r="3.1" fill="#e9bfc9"></circle>
+        <circle r="1.25" fill="#a45c71"></circle>
+      </g>
+      <g id="branch-ink">
+        <g fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round">
+          <path d="M-15 221C41 199 73 169 103 126C122 99 152 76 194 58C223 46 249 35 290 27"></path>
+          <path d="M92 140C73 116 49 99 15 84"></path>
+          <path d="M137 84C157 64 178 49 208 38"></path>
+          <path d="M56 178C48 155 34 138 10 122"></path>
+          <path d="M199 59C211 49 223 43 238 38"></path>
+        </g>
+      </g>
+      <g id="branch-bloom">
+        <g style="color:#f3cbd6">
+          <use href="#sakura-flower" transform="translate(25 87) scale(.82) rotate(12)"></use>
+          <use href="#sakura-flower" transform="translate(75 112) scale(.65) rotate(-18)"></use>
+          <use href="#sakura-flower" transform="translate(104 128) scale(.9) rotate(22)"></use>
+          <use href="#sakura-flower" transform="translate(144 80) scale(.72) rotate(-12)"></use>
+          <use href="#sakura-flower" transform="translate(198 58) scale(.95) rotate(8)"></use>
+          <use href="#sakura-flower" transform="translate(242 38) scale(.6) rotate(20)"></use>
+          <use href="#sakura-flower" transform="translate(54 164) scale(.64) rotate(-5)"></use>
+        </g>
+        <g fill="#e8b9c6" opacity=".74">
+          <circle cx="134" cy="50" r="2.7"></circle>
+          <circle cx="168" cy="28" r="2.1"></circle>
+          <circle cx="225" cy="18" r="2.5"></circle>
+          <circle cx="40" cy="140" r="2.2"></circle>
+        </g>
+      </g>
+    </defs>
+  </svg>
+
+  <main class="app" id="app">
+    <!-- 封面 -->
+    <section class="screen screen--landing" id="landingScreen" aria-labelledby="landingTitle">
+      <span class="float-heart float-heart--one" aria-hidden="true">♡</span>
+      <span class="float-heart float-heart--two" aria-hidden="true">♡</span>
+      <span class="float-heart float-heart--three" aria-hidden="true">♡</span>
+      <span class="float-heart float-heart--four" aria-hidden="true">♡</span>
+      <span class="float-heart float-heart--five" aria-hidden="true">♡</span>
+
+      <div class="brand-row">
+        <span class="eyebrow">恋爱情绪画像</span>
+      </div>
+
+      <header>
+        <h1 class="display-title" id="landingTitle">爱情短板测试</h1>
+        <p class="hero-subtitle">15题生成你的亲密关系完整画像</p>
+      </header>
+
+      <div class="hero-card" aria-label="爱情短板测试介绍">
+        <div class="heart-stage">
+          <svg class="heart-art" viewBox="0 0 320 265" role="img" aria-label="一颗粉色玻璃质感的心">
+            <defs>
+              <linearGradient id="heartStroke" x1="66" y1="52" x2="258" y2="235" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#efc6d1"></stop>
+                <stop offset=".46" stop-color="#dda2b3"></stop>
+                <stop offset="1" stop-color="#c78499"></stop>
+              </linearGradient>
+              <linearGradient id="heartFill" x1="120" y1="80" x2="220" y2="216" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#fce9ee"></stop>
+                <stop offset=".47" stop-color="#f5c2d0"></stop>
+                <stop offset="1" stop-color="#e9a3b7"></stop>
+              </linearGradient>
+              <radialGradient id="heartPool" cx="0" cy="0" r="1" gradientTransform="translate(160 238) rotate(90) scale(13 85)" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#dda2b2" stop-opacity=".24"></stop>
+                <stop offset="1" stop-color="#dda2b2" stop-opacity="0"></stop>
+              </radialGradient>
+              <filter id="heartBlur" x="-50%" y="-100%" width="200%" height="300%">
+                <feGaussianBlur stdDeviation="5"></feGaussianBlur>
+              </filter>
+              <filter id="heartSoftShadow" x="-20%" y="-20%" width="140%" height="150%">
+                <feDropShadow dx="0" dy="9" stdDeviation="10" flood-color="#c37e93" flood-opacity=".14"></feDropShadow>
+              </filter>
+            </defs>
+            <ellipse cx="160" cy="238" rx="85" ry="13" fill="url(#heartPool)" filter="url(#heartBlur)"></ellipse>
+            <ellipse cx="160" cy="238" rx="55" ry="7" fill="none" stroke="#e2a7b8" stroke-opacity=".34" stroke-width="1.3"></ellipse>
+            <path
+              d="M160 231C151 223 48 151 48 92C48 55 78 35 111 44C137 51 153 72 160 88C167 72 183 51 209 44C242 35 272 55 272 92C272 151 169 223 160 231Z"
+              fill="rgba(255,255,255,.19)"
+              stroke="url(#heartStroke)"
+              stroke-width="1.7"
+              filter="url(#heartSoftShadow)"
+            ></path>
+            <path
+              d="M160 213C152 205 77 149 77 105C77 81 98 66 122 72C141 77 155 94 160 108C165 94 179 77 198 72C222 66 243 81 243 105C243 149 168 205 160 213Z"
+              fill="url(#heartFill)"
+              stroke="rgba(239,190,204,.56)"
+              stroke-width="1.1"
+            ></path>
+            <path
+              d="M101 108C107 91 118 83 135 81"
+              fill="none"
+              stroke="#fff"
+              stroke-linecap="round"
+              stroke-width="4.5"
+              opacity=".45"
+            ></path>
+            <path
+              d="M161 111C166 96 181 82 199 77"
+              fill="none"
+              stroke="#fff"
+              stroke-linecap="round"
+              stroke-width="2"
+              opacity=".2"
+            ></path>
+            <path d="M77 76l2.6 7.4L87 86l-7.4 2.6L77 96l-2.6-7.4L67 86l7.4-2.6L77 76Z" fill="#e4a8b9" opacity=".55"></path>
+            <path d="M246 142l2 5.8 5.8 2-5.8 2-2 5.8-2-5.8-5.8-2 5.8-2 2-5.8Z" fill="#e8b2c1" opacity=".6"></path>
+            <circle cx="89" cy="158" r="2.2" fill="#dfa5b6" opacity=".45"></circle>
+            <circle cx="234" cy="61" r="1.7" fill="#dca1b2" opacity=".52"></circle>
+            <circle cx="257" cy="193" r="2.7" fill="#e1a7b8" opacity=".34"></circle>
+          </svg>
+        </div>
+
+        <div class="type-panel" aria-label="测试的四种关系模式">
+          <span class="type-chip">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 19.8C10.9 19 3.9 14.1 3.9 9.4C3.9 6.6 6 4.5 8.6 4.5C10.3 4.5 11.4 5.4 12 6.4C12.6 5.4 13.7 4.5 15.4 4.5C18 4.5 20.1 6.6 20.1 9.4C20.1 14.1 13.1 19 12 19.8Z" stroke="currentColor" stroke-width="1.2"></path>
+              <circle cx="12" cy="11.5" r=".8" fill="currentColor"></circle>
+            </svg>
+            过度敏感型
+          </span>
+          <span class="type-chip">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 19.8C10.9 19 3.9 14.1 3.9 9.4C3.9 6.6 6 4.5 8.6 4.5C10.3 4.5 11.4 5.4 12 6.4C12.6 5.4 13.7 4.5 15.4 4.5C18 4.5 20.1 6.6 20.1 9.4C20.1 14.1 13.1 19 12 19.8Z" stroke="currentColor" stroke-width="1.2"></path>
+              <circle cx="12" cy="11.5" r=".8" fill="currentColor"></circle>
+            </svg>
+            理性理想化型
+          </span>
+          <span class="type-chip">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 19.8C10.9 19 3.9 14.1 3.9 9.4C3.9 6.6 6 4.5 8.6 4.5C10.3 4.5 11.4 5.4 12 6.4C12.6 5.4 13.7 4.5 15.4 4.5C18 4.5 20.1 6.6 20.1 9.4C20.1 14.1 13.1 19 12 19.8Z" stroke="currentColor" stroke-width="1.2"></path>
+              <circle cx="12" cy="11.5" r=".8" fill="currentColor"></circle>
+            </svg>
+            防御回避型
+          </span>
+          <span class="type-chip">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 19.8C10.9 19 3.9 14.1 3.9 9.4C3.9 6.6 6 4.5 8.6 4.5C10.3 4.5 11.4 5.4 12 6.4C12.6 5.4 13.7 4.5 15.4 4.5C18 4.5 20.1 6.6 20.1 9.4C20.1 14.1 13.1 19 12 19.8Z" stroke="currentColor" stroke-width="1.2"></path>
+              <circle cx="12" cy="11.5" r=".8" fill="currentColor"></circle>
+            </svg>
+            情绪外放型
+          </span>
+        </div>
+      </div>
+
+      <div class="hero-cta">
+        <button class="btn btn--primary" id="startBtn" type="button">开始测试</button>
+      </div>
+      <p class="disclaimer">娱乐测评仅供参考</p>
+    </section>
+
+    <!-- 答题 -->
+    <section class="screen screen--quiz" id="quizScreen" aria-labelledby="quizTitle" hidden>
+      <header class="quiz-head">
+        <span class="eyebrow">恋爱情绪画像</span>
+        <h1 class="quiz-title" id="quizTitle">爱情短板测试</h1>
+        <p class="quiz-counter" aria-live="polite">
+          第 <span class="number" id="currentNumber">1</span> 题
+          <span class="slash">/</span>
+          共 <span class="number" id="totalNumber">15</span> 题
+        </p>
+      </header>
+
+      <div class="quiz-card" id="quizCard">
+        <div class="progress-head">
+          <span>答题进度</span>
+          <span class="progress-percent" id="progressPercent">7%</span>
+        </div>
+        <div class="progress-track" role="progressbar" aria-label="答题进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="7" id="progressTrack">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="question-stage" id="questionStage">
+          <h2 class="question-title" id="questionTitle" tabindex="-1"></h2>
+          <div class="option-list" id="optionList"></div>
+        </div>
+
+        <button class="btn btn--primary quiz-continue" id="continueBtn" type="button">继续答题</button>
+        <p class="sr-only" id="quizLive" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- 结果 -->
+    <section class="screen screen--result" id="resultScreen" aria-labelledby="resultTitle" hidden>
+      <svg class="blossom blossom--left" viewBox="0 0 290 240" aria-hidden="true">
+        <g style="color:#a97080; opacity:.62">
+          <use href="#branch-ink"></use>
+        </g>
+        <g opacity=".92">
+          <use href="#branch-bloom"></use>
+        </g>
+      </svg>
+      <svg class="blossom blossom--right" viewBox="0 0 290 240" aria-hidden="true">
+        <g style="color:#a97080; opacity:.5">
+          <use href="#branch-ink"></use>
+        </g>
+        <g opacity=".8">
+          <use href="#branch-bloom"></use>
+        </g>
+      </svg>
+
+      <div id="resultCapture">
+        <header class="result-head">
+          <h1 class="result-title" id="resultTitle">你的爱情短板测试结果</h1>
+          <p class="result-subtitle">关系模式画像报告</p>
+          <div class="result-type" id="resultType">过度敏感型</div>
+        </header>
+
+        <div class="score-summary">
+          <div class="score-main">
+            <span class="score-label">综合得分</span>
+            <strong id="totalScore">72</strong>
+          </div>
+          <p class="score-versus">击败了 <strong id="percentText">68%</strong> 的测试者</p>
+        </div>
+
+        <div class="analysis">
+          <div class="radar-wrap" id="radarWrap" aria-label="六维关系画像雷达图"></div>
+          <div class="dim-list" id="dimList" aria-label="六维得分"></div>
+        </div>
+
+        <section class="relation-card" aria-labelledby="relationTitle">
+          <h2 class="relation-title" id="relationTitle">你的关系模式</h2>
+          <p class="relation-summary" id="summaryText"></p>
+
+          <div class="insight-grid">
+            <article class="insight">
+              <h3 class="insight-title">核心优势</h3>
+              <p id="advantageText"></p>
+            </article>
+            <article class="insight">
+              <h3 class="insight-title">主要短板</h3>
+              <p id="weaknessText"></p>
+            </article>
+            <article class="insight">
+              <h3 class="insight-title">行动建议</h3>
+              <p id="adviceText"></p>
+            </article>
+          </div>
+
+          <div class="match-block">
+            <span class="match-label">合适的爱人类型</span>
+            <div class="match-list" id="matchList"></div>
+          </div>
+        </section>
+
+        <p class="result-slogan"><span class="spark" aria-hidden="true">✦</span><span id="sloganText"></span></p>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn btn--share" id="shareBtn" type="button">分享报告</button>
+        <button class="btn btn--restart" id="restartBtn" type="button">重新测试</button>
+      </div>
+      <p class="result-footnote">娱乐测评仅供参考 · 不替代专业心理咨询</p>
+    </section>
+  </main>
+
+  <!-- 分享报告 -->
+  <div class="modal" id="shareModal" hidden>
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__card" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+      <button class="modal__close" id="modalClose" type="button" aria-label="关闭分享弹窗" data-close-modal>×</button>
+      <h2 class="modal__title" id="shareTitle">你的专属关系画像</h2>
+      <p class="modal__hint">长按图片保存，或下载后分享给朋友</p>
+      <div class="modal__preview">
+        <img id="shareImg" alt="爱情短板测试结果分享海报" />
+        <p class="modal__notice" id="shareNotice" hidden>分享图片暂时生成失败，你仍可以复制文案分享这次结果。</p>
+      </div>
+      <div class="modal__copy" id="shareCopyPreview"></div>
+      <div class="modal__actions">
+        <a class="modal__button modal__button--primary" id="downloadReport" href="#" download="我的爱情短板测试报告.png">保存图片</a>
+        <button class="modal__button modal__button--ghost" id="copyShareText" type="button">复制分享文案</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const questions = [
+        {
+          q: "伴侣长时间不回消息，你第一反应？",
+          o: [
+            { txt: "胡思乱想，反复看聊天框", score: { sa: -8, ex: -2, bd: -6, tr: -4, cf: -7, rc: -9 } },
+            { txt: "有点失落，先忙自己的事", score: { sa: 7, ex: 5, bd: 6, tr: 6, cf: 7, rc: 8 } },
+            { txt: "心里不舒服，默默憋着", score: { sa: -3, ex: -9, bd: 8, tr: -5, cf: -8, rc: 6 } },
+            { txt: "直接表达不满，希望回应", score: { sa: -5, ex: 8, bd: -8, tr: -3, cf: -7, rc: -4 } }
+          ]
+        },
+        {
+          q: "吵架之后，你通常？",
+          o: [
+            { txt: "反复复盘，很久走不出来", score: { sa: -9, ex: -3, bd: -5, tr: -4, cf: -8, rc: -10 } },
+            { txt: "冷静沟通，愿意一起解决", score: { sa: 8, ex: 7, bd: 7, tr: 7, cf: 8, rc: 7 } },
+            { txt: "沉默冷战，等对方先低头", score: { sa: -4, ex: -10, bd: 6, tr: -6, cf: -9, rc: 5 } },
+            { txt: "情绪上头，脱口而出狠话", score: { sa: -6, ex: 9, bd: -7, tr: -3, cf: -10, rc: -5 } }
+          ]
+        },
+        {
+          q: "当对方和你的想法不一样时，你会？",
+          o: [
+            { txt: "下意识妥协，先照顾对方", score: { sa: -7, ex: -8, bd: -9, tr: 5, cf: -6, rc: -4 } },
+            { txt: "客观表达，协商求同存异", score: { sa: 7, ex: 8, bd: 8, tr: 7, cf: 8, rc: 7 } },
+            { txt: "不想争辩，回避这个话题", score: { sa: -2, ex: -9, bd: 7, tr: 3, cf: -9, rc: 6 } },
+            { txt: "一定要说服对方认同自己", score: { sa: -5, ex: 7, bd: -8, tr: -2, cf: -7, rc: -3 } }
+          ]
+        },
+        {
+          q: "恋爱中你更容易？",
+          o: [
+            { txt: "把爱情当重心，容易失去自我", score: { sa: -10, ex: -4, bd: -10, tr: 6, cf: -5, rc: -6 } },
+            { txt: "保留自己的圈子和热爱", score: { sa: 8, ex: 6, bd: 9, tr: 8, cf: 7, rc: 8 } },
+            { txt: "害怕受伤，不敢完全敞开", score: { sa: -5, ex: -3, bd: 8, tr: -7, cf: -3, rc: 7 } },
+            { txt: "希望对方完全满足我", score: { sa: -6, ex: 7, bd: -9, tr: 4, cf: -6, rc: -2 } }
+          ]
+        },
+        {
+          q: "伴侣夸奖你的时候，你的感受？",
+          o: [
+            { txt: "不敢相信，觉得只是客套", score: { sa: -8, ex: -5, bd: -3, tr: -4, cf: -2, rc: -5 } },
+            { txt: "坦然接受，大方表达感谢", score: { sa: 8, ex: 7, bd: 7, tr: 8, cf: 6, rc: 7 } },
+            { txt: "淡淡带过，不太习惯", score: { sa: -3, ex: -8, bd: 6, tr: 3, cf: -4, rc: 5 } },
+            { txt: "持续要肯定，缺夸奖会不安", score: { sa: -7, ex: 6, bd: -6, tr: 2, cf: -3, rc: -4 } }
+          ]
+        },
+        {
+          q: "发现伴侣有小缺点，你会？",
+          o: [
+            { txt: "自动美化，选择性忽略问题", score: { sa: -6, ex: -5, bd: -7, tr: 6, cf: -4, rc: -3 } },
+            { txt: "接受不完美，分清原则问题", score: { sa: 7, ex: 7, bd: 8, tr: 7, cf: 8, rc: 7 } },
+            { txt: "降低期待，悄悄拉开距离", score: { sa: -4, ex: -4, bd: 7, tr: -6, cf: -5, rc: 6 } },
+            { txt: "总想改造对方，按我的标准", score: { sa: -5, ex: 8, bd: -9, tr: -3, cf: -7, rc: -2 } }
+          ]
+        },
+        {
+          q: "一段关系里，你最害怕？",
+          o: [
+            { txt: "被抛弃，对方慢慢不爱我", score: { sa: -10, ex: -4, bd: -6, tr: -5, cf: -4, rc: -8 } },
+            { txt: "三观不合，无法真正沟通", score: { sa: 6, ex: 8, bd: 7, tr: 6, cf: 8, rc: 7 } },
+            { txt: "失去自由，被关系束缚", score: { sa: -2, ex: -3, bd: 9, tr: 4, cf: -3, rc: 8 } },
+            { txt: "付出很多，得不到对等回报", score: { sa: -7, ex: 7, bd: -5, tr: -4, cf: -6, rc: -3 } }
+          ]
+        },
+        {
+          q: "如果对方很忙忽略了你，你会？",
+          o: [
+            { txt: "不断主动找对方要关注", score: { sa: -9, ex: 5, bd: -8, tr: -3, cf: -5, rc: -7 } },
+            { txt: "理解对方，安排好自己的生活", score: { sa: 7, ex: 6, bd: 8, tr: 7, cf: 7, rc: 8 } },
+            { txt: "减少联系，情绪慢慢抽离", score: { sa: -4, ex: -8, bd: 7, tr: -5, cf: -6, rc: 7 } },
+            { txt: "觉得被忽略，爆发负面情绪", score: { sa: -8, ex: 8, bd: -7, tr: -2, cf: -7, rc: -4 } }
+          ]
+        },
+        {
+          q: "面对分手风险，你第一反应？",
+          o: [
+            { txt: "拼命挽回，甚至降低底线", score: { sa: -10, ex: 4, bd: -10, tr: 3, cf: -5, rc: -9 } },
+            { txt: "冷静评估，关系是否值得", score: { sa: 7, ex: 8, bd: 7, tr: 7, cf: 8, rc: 7 } },
+            { txt: "提前抽离，假装无所谓", score: { sa: -3, ex: -6, bd: 8, tr: -6, cf: -7, rc: 8 } },
+            { txt: "争吵对峙，指责对方的问题", score: { sa: -7, ex: 9, bd: -6, tr: -3, cf: -8, rc: -3 } }
+          ]
+        },
+        {
+          q: "你会不会经常拿别人的恋爱对比自己？",
+          o: [
+            { txt: "经常对比，羡慕别人的爱情", score: { sa: -8, ex: -3, bd: -5, tr: -4, cf: -3, rc: -6 } },
+            { txt: "很少，每段感情都不一样", score: { sa: 7, ex: 6, bd: 8, tr: 7, cf: 7, rc: 8 } },
+            { txt: "默默对比，降低对爱的期待", score: { sa: -4, ex: -4, bd: 6, tr: -5, cf: -4, rc: 6 } },
+            { txt: "经常对比，觉得自己付出更多", score: { sa: -6, ex: 7, bd: -4, tr: -3, cf: -5, rc: -2 } }
+          ]
+        },
+        {
+          q: "对方提出不同意见反驳你，你？",
+          o: [
+            { txt: "马上怀疑是自己做错了", score: { sa: -9, ex: -7, bd: -6, tr: -4, cf: -5, rc: -7 } },
+            { txt: "认真听，理性讨论", score: { sa: 7, ex: 8, bd: 7, tr: 7, cf: 8, rc: 7 } },
+            { txt: "不想争论，直接回避", score: { sa: -3, ex: -9, bd: 7, tr: 2, cf: -9, rc: 6 } },
+            { txt: "觉得不被理解，感到委屈", score: { sa: -7, ex: 8, bd: -5, tr: -4, cf: -6, rc: -4 } }
+          ]
+        },
+        {
+          q: "在感情里，你表达需求的方式？",
+          o: [
+            { txt: "不敢直说，等对方猜到", score: { sa: -7, ex: -10, bd: -4, tr: -3, cf: -6, rc: -5 } },
+            { txt: "直接温和地说出需求", score: { sa: 7, ex: 9, bd: 8, tr: 7, cf: 8, rc: 7 } },
+            { txt: "尽量不提，怕给对方添麻烦", score: { sa: -4, ex: -9, bd: 7, tr: 3, cf: -5, rc: 6 } },
+            { txt: "用冷暗示，让对方猜", score: { sa: -6, ex: -7, bd: -6, tr: -4, cf: -8, rc: -3 } }
+          ]
+        },
+        {
+          q: "当感情平淡没有新鲜感，你会？",
+          o: [
+            { txt: "焦虑不安，怀疑不爱了", score: { sa: -8, ex: -3, bd: -4, tr: -5, cf: -4, rc: -7 } },
+            { txt: "接受平淡，创造新的小美好", score: { sa: 7, ex: 7, bd: 7, tr: 8, cf: 7, rc: 8 } },
+            { txt: "觉得正常，慢慢减少投入", score: { sa: -3, ex: -5, bd: 8, tr: -4, cf: -3, rc: 7 } },
+            { txt: "希望对方持续制造惊喜", score: { sa: -6, ex: 6, bd: -5, tr: 2, cf: -5, rc: -2 } }
+          ]
+        },
+        {
+          q: "你会不会因为恋爱，牺牲自己的计划？",
+          o: [
+            { txt: "经常，优先迁就对方时间", score: { sa: -7, ex: -4, bd: -10, tr: 5, cf: -3, rc: -4 } },
+            { txt: "互相协调，不单方面牺牲", score: { sa: 7, ex: 7, bd: 9, tr: 7, cf: 7, rc: 7 } },
+            { txt: "很少牺牲，守住自己的边界", score: { sa: -2, ex: -3, bd: 9, tr: 4, cf: -2, rc: 7 } },
+            { txt: "我可以牺牲，对方也要同等付出", score: { sa: -5, ex: 6, bd: -6, tr: -3, cf: -5, rc: -3 } }
+          ]
+        },
+        {
+          q: "如果伴侣没有满足你的期待，你内心？",
+          o: [
+            { txt: "自我内耗，怀疑要求太多", score: { sa: -9, ex: -6, bd: -5, tr: -4, cf: -4, rc: -8 } },
+            { txt: "客观沟通，调整期待", score: { sa: 7, ex: 8, bd: 7, tr: 7, cf: 8, rc: 7 } },
+            { txt: "默默记下，慢慢减少期待", score: { sa: -4, ex: -5, bd: 7, tr: -5, cf: -5, rc: 6 } },
+            { txt: "感到失望，直接表达不满", score: { sa: -6, ex: 8, bd: -4, tr: -2, cf: -6, rc: -3 } }
+          ]
+        }
+      ];
+
+      const resultMap = {
+        A: {
+          type: "过度敏感型",
+          summary: "你在亲密关系中非常在意被爱感，容易通过对方的回应确认自己是否被重视。一旦感受不到关注，就会启动敏感防御。",
+          advantage: "共情力强，愿意认真经营关系",
+          weakness: "容易内耗，反复确认爱与在意",
+          advice: "把注意力放回自己的生活，练习直接表达需求",
+          matches: ["稳定型", "表达型", "陪伴型"],
+          slogan: "你不需要反复证明自己值得被爱，你本身就已经值得。",
+          shareLine: "敏感不是错，是我认真爱过这个世界的证据。"
+        },
+        B: {
+          type: "理性理想化型",
+          summary: "你习惯用理性与标准理解亲密关系，对“理想的爱情”有清晰想象。越在意，越容易拿完美范本衡量现实。",
+          advantage: "情绪稳定，擅长沟通与换位思考",
+          weakness: "容易理想化关系，难以接纳落差",
+          advice: "把标准放轻一点，多感受真实相处的细节",
+          matches: ["成熟型", "共创型", "包容型"],
+          slogan: "爱不是一套标准答案，而是两个人一起写下的过程。",
+          shareLine: "不再寻找完美答案，开始认真感受真实的爱。"
+        },
+        C: {
+          type: "防御回避型",
+          summary: "你独立、清醒，也习惯给自己留一条退路。关系越靠近，你越容易用沉默和距离保护自己。",
+          advantage: "独立清醒，能守住自己的边界",
+          weakness: "习惯自我防御，很难真正敞开心",
+          advice: "允许自己适度依赖，把真实感受说出口",
+          matches: ["耐心型", "尊重型", "主动型"],
+          slogan: "有人愿意等你放下围墙，也值得你试着开一扇门。",
+          shareLine: "我习惯保护自己，但也在学习如何靠近别人。"
+        },
+        D: {
+          type: "情绪外放型",
+          summary: "你爱得坦荡而热烈，情绪也来得直接。你需要明确的回应，一有不安就容易用强烈的方式确认爱。",
+          advantage: "爱恨坦荡，真诚热烈地表达",
+          weakness: "情绪爆发快，容易向外索取安全感",
+          advice: "情绪上头时先暂停，练习在平静时表达需求",
+          matches: ["包容型", "稳定型", "修复型"],
+          slogan: "你渴望被坚定偏爱，但别用尖锐的情绪推开想爱你的人。",
+          shareLine: "我的热烈与不安，都值得被温柔接住。"
+        }
+      };
+
+      const dimNames = ["情绪安全感", "直接表达", "边界感", "亲密信任", "冲突处理", "情绪恢复力"];
+      const radarLabels = ["安全感", "表达", "边界", "信任", "冲突", "恢复"];
+      const dimKeys = ["sa", "ex", "bd", "tr", "cf", "rc"];
+      const letters = ["A", "B", "C", "D"];
+
+      const landingScreen = document.getElementById("landingScreen");
+      const quizScreen = document.getElementById("quizScreen");
+      const resultScreen = document.getElementById("resultScreen");
+      const startBtn = document.getElementById("startBtn");
+      const continueBtn = document.getElementById("continueBtn");
+      const restartBtn = document.getElementById("restartBtn");
+      const shareBtn = document.getElementById("shareBtn");
+      const questionTitle = document.getElementById("questionTitle");
+      const optionList = document.getElementById("optionList");
+      const questionStage = document.getElementById("questionStage");
+      const currentNumber = document.getElementById("currentNumber");
+      const totalNumber = document.getElementById("totalNumber");
+      const progressPercent = document.getElementById("progressPercent");
+      const progressFill = document.getElementById("progressFill");
+      const progressTrack = document.getElementById("progressTrack");
+      const quizCard = document.getElementById("quizCard");
+      const quizLive = document.getElementById("quizLive");
+      const resultType = document.getElementById("resultType");
+      const totalScore = document.getElementById("totalScore");
+      const percentText = document.getElementById("percentText");
+      const radarWrap = document.getElementById("radarWrap");
+      const dimList = document.getElementById("dimList");
+      const summaryText = document.getElementById("summaryText");
+      const advantageText = document.getElementById("advantageText");
+      const weaknessText = document.getElementById("weaknessText");
+      const adviceText = document.getElementById("adviceText");
+      const matchList = document.getElementById("matchList");
+      const sloganText = document.getElementById("sloganText");
+      const shareModal = document.getElementById("shareModal");
+      const shareImg = document.getElementById("shareImg");
+      const shareNotice = document.getElementById("shareNotice");
+      const shareCopyPreview = document.getElementById("shareCopyPreview");
+      const downloadReport = document.getElementById("downloadReport");
+      const copyShareText = document.getElementById("copyShareText");
+      const modalClose = document.getElementById("modalClose");
+      const toast = document.getElementById("toast");
+
+      let currentIndex = 0;
+      let selectedOption = null;
+      let dimScore = { sa: 0, ex: 0, bd: 0, tr: 0, cf: 0, rc: 0 };
+      let typeCount = { A: 0, B: 0, C: 0, D: 0 };
+      let answers = [];
+      let latestResult = null;
+      let latestShareText = "";
+      let latestShareDataUrl = "";
+      let latestShareCopyPreview = "";
+      let toastTimer = 0;
+      let lastFocusedElement = null;
+      let isGeneratingResult = false;
+
+      function resetState() {
+        currentIndex = 0;
+        selectedOption = null;
+        dimScore = { sa: 0, ex: 0, bd: 0, tr: 0, cf: 0, rc: 0 };
+        typeCount = { A: 0, B: 0, C: 0, D: 0 };
+        answers = new Array(questions.length).fill(null);
+        isGeneratingResult = false;
+      }
+
+      function showScreen(target) {
+        [landingScreen, quizScreen, resultScreen].forEach((screen) => {
+          screen.hidden = screen !== target;
+        });
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        });
+      }
+
+      function startQuiz() {
+        resetState();
+        showScreen(quizScreen);
+        totalNumber.textContent = String(questions.length);
+        renderQuestion({ focus: true });
+      }
+
+      function renderQuestion({ focus = false } = {}) {
+        const item = questions[currentIndex];
+        const progress = Math.round(((currentIndex + 1) / questions.length) * 100);
+
+        currentNumber.textContent = String(currentIndex + 1);
+        totalNumber.textContent = String(questions.length);
+        progressPercent.textContent = progress + "%";
+        progressFill.style.width = progress + "%";
+        progressTrack.setAttribute("aria-valuenow", String(progress));
+        questionTitle.textContent = item.q;
+        continueBtn.classList.remove("is-loading");
+        continueBtn.disabled = false;
+        continueBtn.textContent = currentIndex === questions.length - 1 ? "查看结果" : "继续答题";
+        quizLive.textContent = "";
+
+        optionList.innerHTML = item.o.map((option, index) => `
+          <button
+            class="option"
+            type="button"
+            data-index="${index}"
+            aria-pressed="false"
+          >
+            <span class="option-letter" aria-hidden="true">${letters[index]}</span>
+            <span class="option-text">${option.txt}</span>
+          </button>
+        `).join("");
+
+        selectedOption = null;
+        questionStage.classList.remove("is-swapping");
+        void questionStage.offsetWidth;
+        questionStage.classList.add("is-swapping");
+
+        if (focus) {
+          requestAnimationFrame(() => {
+            questionTitle.focus({ preventScroll: true });
+          });
+        }
+      }
+
+      function chooseOption(index) {
+        selectedOption = index;
+        optionList.querySelectorAll(".option").forEach((button, buttonIndex) => {
+          const active = buttonIndex === index;
+          button.classList.toggle("is-selected", active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+        quizLive.textContent = "已选择第 " + letters[index] + " 项";
+      }
+
+      function nudgeOptions() {
+        optionList.classList.remove("is-nudging");
+        void optionList.offsetWidth;
+        optionList.classList.add("is-nudging");
+        quizLive.textContent = "请先选择一个最接近你的答案";
+      }
+
+      function commitCurrentAnswer() {
+        if (selectedOption === null) return;
+        const item = questions[currentIndex];
+        const option = item.o[selectedOption];
+        const letter = letters[selectedOption];
+
+        typeCount[letter] += 1;
+        dimKeys.forEach((key) => {
+          dimScore[key] += option.score[key] || 0;
+        });
+        answers[currentIndex] = selectedOption;
+      }
+
+      function handleContinue() {
+        if (isGeneratingResult) return;
+
+        if (selectedOption === null) {
+          nudgeOptions();
+          return;
+        }
+
+        commitCurrentAnswer();
+
+        if (currentIndex >= questions.length - 1) {
+          isGeneratingResult = true;
+          continueBtn.disabled = true;
+          continueBtn.classList.add("is-loading");
+          continueBtn.textContent = "正在生成画像";
+          quizLive.textContent = "正在生成你的关系模式画像";
+          window.setTimeout(() => {
+            buildAndShowResult();
+            isGeneratingResult = false;
+          }, 650);
+          return;
+        }
+
+        currentIndex += 1;
+        renderQuestion({ focus: true });
+      }
+
+      function computeResult() {
+        const dimValues = dimKeys.map((key) => {
+          const raw = dimScore[key];
+          const normalized = (raw / (questions.length * 10) + 1) / 2;
+          return Math.round(56 + Math.max(0, Math.min(1, normalized)) * 34);
+        });
+
+        const score = Math.round(dimValues.reduce((sum, value) => sum + value, 0) / dimValues.length);
+        const gamePercent = Math.max(42, Math.min(96, Math.round(score * 0.94)));
+        const dominantLetter = Object.keys(typeCount).reduce((best, letter) => {
+          return typeCount[letter] > typeCount[best] ? letter : best;
+        }, "A");
+
+        return {
+          type: resultMap[dominantLetter],
+          letter: dominantLetter,
+          score,
+          percent: gamePercent,
+          dims: dimValues
+        };
+      }
+
+      function buildRadar(values) {
+        const cx = 110;
+        const cy = 112;
+        const radius = 67;
+        const angles = dimNames.map((_, index) => (-Math.PI / 2) + (index * Math.PI / 3));
+        const pointAt = (angle, distance) => ({
+          x: cx + Math.cos(angle) * distance,
+          y: cy + Math.sin(angle) * distance
+        });
+        const pointsFor = (distance) => angles.map((angle) => {
+          const point = pointAt(angle, distance);
+          return point.x.toFixed(2) + "," + point.y.toFixed(2);
+        }).join(" ");
+        const rings = [0.25, 0.5, 0.75, 1].map((scale) => `
+          <polygon class="radar-grid" points="${pointsFor(radius * scale)}"></polygon>
+        `).join("");
+        const axes = angles.map((angle) => {
+          const point = pointAt(angle, radius);
+          return `<line class="radar-axis" x1="${cx}" y1="${cy}" x2="${point.x.toFixed(2)}" y2="${point.y.toFixed(2)}"></line>`;
+        }).join("");
+        const dataPoints = values.map((value, index) => {
+          return pointAt(angles[index], radius * value / 100);
+        });
+        const area = dataPoints.map((point) => point.x.toFixed(2) + "," + point.y.toFixed(2)).join(" ");
+        const dots = dataPoints.map((point) => `
+          <circle class="radar-dot" cx="${point.x.toFixed(2)}" cy="${point.y.toFixed(2)}" r="2.6"></circle>
+        `).join("");
+        const labels = dimNames.map((name, index) => {
+          const angle = angles[index];
+          const anchorPoint = pointAt(angle, 90);
+          const cos = Math.cos(angle);
+          const sin = Math.sin(angle);
+          let anchor = "middle";
+          let dx = 0;
+          let dy = 0;
+
+          if (cos > 0.2) {
+            anchor = "start";
+            dx = 2;
+          } else if (cos < -0.2) {
+            anchor = "end";
+            dx = -2;
+          }
+
+          if (sin > 0.8) {
+            dy = 11;
+          } else if (sin < -0.8) {
+            dy = -5;
+          } else {
+            dy = 3.5;
+          }
+
+          return `<text class="radar-label" x="${(anchorPoint.x + dx).toFixed(2)}" y="${(anchorPoint.y + dy).toFixed(2)}" text-anchor="${anchor}">${radarLabels[index]}</text>`;
+        }).join("");
+
+        return `
+          <svg viewBox="0 0 220 224" role="img" aria-labelledby="radarTitle radarDesc">
+            <title id="radarTitle">六维关系画像雷达图</title>
+            <desc id="radarDesc">${dimNames.map((name, index) => name + " " + values[index] + "分").join("，")}</desc>
+            ${rings}
+            ${axes}
+            <polygon class="radar-area" points="${area}"></polygon>
+            ${dots}
+            ${labels}
+          </svg>
+        `;
+      }
+
+      function renderDims(values) {
+        dimList.innerHTML = dimNames.map((name, index) => `
+          <div class="dim-row">
+            <div class="dim-meta">
+              <span>${name}</span>
+              <span class="dim-score">${values[index]}</span>
+            </div>
+            <div class="dim-track">
+              <div class="dim-fill" data-value="${values[index]}"></div>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      function animateResultVisuals(values) {
+        radarWrap.innerHTML = buildRadar(values);
+
+        requestAnimationFrame(() => {
+          window.setTimeout(() => {
+            radarWrap.querySelector(".radar-area")?.classList.add("is-ready");
+            radarWrap.querySelectorAll(".radar-dot").forEach((dot) => dot.classList.add("is-ready"));
+            dimList.querySelectorAll(".dim-fill").forEach((bar) => {
+              bar.style.width = bar.getAttribute("data-value") + "%";
+            });
+          }, 80);
+        });
+      }
+
+      function buildAndShowResult() {
+        const result = computeResult();
+        latestResult = result;
+
+        resultType.textContent = result.type.type;
+        totalScore.textContent = String(result.score);
+        percentText.textContent = result.percent + "%";
+        summaryText.textContent = result.type.summary;
+        advantageText.textContent = result.type.advantage;
+        weaknessText.textContent = result.type.weakness;
+        adviceText.textContent = result.type.advice;
+        sloganText.textContent = result.type.slogan;
+        matchList.innerHTML = result.type.matches.map((match) => `<span class="match-pill">${match}</span>`).join("");
+
+        showScreen(resultScreen);
+        renderDims(result.dims);
+        animateResultVisuals(result.dims);
+        requestAnimationFrame(() => {
+          resultScreen.querySelector(".result-title")?.focus?.({ preventScroll: true });
+        });
+      }
+
+      function restartTest() {
+        closeShareModal();
+        resetState();
+        showScreen(quizScreen);
+        renderQuestion({ focus: true });
+      }
+
+      // ---------- 分享海报 ----------
+      function roundRect(ctx, x, y, width, height, radius) {
+        const r = Math.min(radius, width / 2, height / 2);
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + width, y, x + width, y + height, r);
+        ctx.arcTo(x + width, y + height, x, y + height, r);
+        ctx.arcTo(x, y + height, x, y, r);
+        ctx.arcTo(x, y, x + width, y, r);
+        ctx.closePath();
+      }
+
+      function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 3) {
+        const characters = Array.from(text);
+        let line = "";
+        let lineCount = 0;
+
+        for (let i = 0; i < characters.length; i += 1) {
+          const testLine = line + characters[i];
+          if (ctx.measureText(testLine).width > maxWidth && line) {
+            ctx.fillText(line, x, y + lineCount * lineHeight);
+            line = characters[i];
+            lineCount += 1;
+            if (lineCount >= maxLines) {
+              if (i < characters.length - 1) {
+                let output = line;
+                while (ctx.measureText(output + "…").width > maxWidth && output.length > 0) {
+                  output = output.slice(0, -1);
+                }
+                ctx.fillText(output + "…", x, y + (lineCount - 1) * lineHeight);
+              }
+              return lineCount;
+            }
+          } else {
+            line = testLine;
+          }
+        }
+
+        if (line && lineCount < maxLines) {
+          ctx.fillText(line, x, y + lineCount * lineHeight);
+          lineCount += 1;
+        }
+        return lineCount;
+      }
+
+      function drawCanvasHeart(ctx, x, y, size, rotation, alpha) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rotation);
+        ctx.scale(size, size);
+        ctx.beginPath();
+        ctx.moveTo(0, 0.32);
+        ctx.bezierCurveTo(-0.52, -0.08, -0.62, -0.62, -0.2, -0.65);
+        ctx.bezierCurveTo(0.02, -0.66, 0.14, -0.46, 0.2, -0.31);
+        ctx.bezierCurveTo(0.26, -0.46, 0.38, -0.66, 0.6, -0.65);
+        ctx.bezierCurveTo(1.02, -0.62, 0.92, -0.08, 0.4, 0.32);
+        ctx.lineTo(0.2, 0.5);
+        ctx.closePath();
+        ctx.fillStyle = `rgba(218, 143, 165, ${alpha})`;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawCanvasBlossom(ctx, x, y, scale, rotation, alpha) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rotation);
+        ctx.scale(scale, scale);
+        for (let i = 0; i < 5; i += 1) {
+          ctx.save();
+          ctx.rotate((Math.PI * 2 / 5) * i);
+          ctx.beginPath();
+          ctx.ellipse(0, -10, 6, 10, 0, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(246, 211, 220, ${alpha})`;
+          ctx.fill();
+          ctx.restore();
+        }
+        ctx.beginPath();
+        ctx.arc(0, 0, 3.4, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(230, 188, 199, ${alpha + 0.12})`;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawSharePoster(result) {
+        const W = 750;
+        const H = 1125;
+        const canvas = document.createElement("canvas");
+        canvas.width = W;
+        canvas.height = H;
+        const ctx = canvas.getContext("2d");
+        const type = result.type;
+
+        // 柔和背景
+        const background = ctx.createLinearGradient(0, 0, 0, H);
+        background.addColorStop(0, "#fae4ec");
+        background.addColorStop(0.42, "#fff6f9");
+        background.addColorStop(1, "#fffdfd");
+        ctx.fillStyle = background;
+        ctx.fillRect(0, 0, W, H);
+
+        const glowOne = ctx.createRadialGradient(65, 55, 0, 65, 55, 280);
+        glowOne.addColorStop(0, "rgba(247, 191, 209, .64)");
+        glowOne.addColorStop(1, "rgba(247, 191, 209, 0)");
+        ctx.fillStyle = glowOne;
+        ctx.fillRect(0, 0, W, 400);
+
+        const glowTwo = ctx.createRadialGradient(710, 130, 0, 710, 130, 300);
+        glowTwo.addColorStop(0, "rgba(255, 213, 226, .68)");
+        glowTwo.addColorStop(1, "rgba(255, 213, 226, 0)");
+        ctx.fillStyle = glowTwo;
+        ctx.fillRect(400, 0, 350, 470);
+
+        const glowThree = ctx.createRadialGradient(660, 1050, 0, 660, 1050, 300);
+        glowThree.addColorStop(0, "rgba(249, 217, 228, .44)");
+        glowThree.addColorStop(1, "rgba(249, 217, 228, 0)");
+        ctx.fillStyle = glowThree;
+        ctx.fillRect(360, 780, 390, 345);
+
+        // 手绘感枝花
+        ctx.save();
+        ctx.strokeStyle = "rgba(171, 116, 132, .4)";
+        ctx.lineWidth = 2;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(-18, 220);
+        ctx.bezierCurveTo(82, 184, 90, 106, 168, 52);
+        ctx.bezierCurveTo(208, 24, 258, 34, 300, 4);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(70, 152);
+        ctx.bezierCurveTo(120, 122, 132, 104, 153, 82);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(662, 215);
+        ctx.bezierCurveTo(616, 174, 602, 88, 538, 42);
+        ctx.bezierCurveTo(600, 70, 656, 114, 780, 82);
+        ctx.stroke();
+        ctx.restore();
+
+        drawCanvasBlossom(ctx, 38, 168, 1.06, 0.2, 0.68);
+        drawCanvasBlossom(ctx, 116, 94, 0.8, -0.3, 0.62);
+        drawCanvasBlossom(ctx, 190, 46, 0.95, 0.4, 0.55);
+        drawCanvasBlossom(ctx, 268, 24, 0.6, -0.2, 0.56);
+        drawCanvasBlossom(ctx, 690, 154, 1.02, -0.15, 0.56);
+        drawCanvasBlossom(ctx, 610, 73, 0.74, 0.3, 0.5);
+        drawCanvasBlossom(ctx, 540, 30, 0.58, -0.4, 0.46);
+
+        drawCanvasHeart(ctx, 70, 350, 22, 0.25, 0.34);
+        drawCanvasHeart(ctx, 688, 308, 17, -0.2, 0.3);
+        drawCanvasHeart(ctx, 90, 1000, 16, -0.3, 0.24);
+        drawCanvasHeart(ctx, 655, 1020, 23, 0.2, 0.2);
+
+        // 玻璃主卡
+        ctx.save();
+        roundRect(ctx, 38, 48, W - 76, H - 96, 42);
+        ctx.fillStyle = "rgba(255,255,255,.52)";
+        ctx.fill();
+        ctx.strokeStyle = "rgba(255,255,255,.93)";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
+
+        // 顶部标签
+        ctx.save();
+        roundRect(ctx, W / 2 - 81, 83, 162, 36, 18);
+        ctx.fillStyle = "rgba(255,255,255,.58)";
+        ctx.fill();
+        ctx.strokeStyle = "rgba(255,255,255,.9)";
+        ctx.stroke();
+        ctx.fillStyle = "#b45a75";
+        ctx.font = "600 18px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("恋爱情绪画像", W / 2, 101);
+        ctx.restore();
+
+        // 标题
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "alphabetic";
+        ctx.fillStyle = "#a64864";
+        ctx.font = "600 41px \"Songti SC\", \"STSong\", \"Noto Serif CJK SC\", \"SimSun\", serif";
+        ctx.fillText("你的爱情短板测试结果", W / 2, 171);
+        ctx.fillStyle = "#9a6c7b";
+        ctx.font = "400 18px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+        ctx.fillText("关系模式画像报告", W / 2, 207);
+        ctx.restore();
+
+        // 类型胶囊
+        ctx.save();
+        const typeGradient = ctx.createLinearGradient(W / 2 - 100, 0, W / 2 + 100, 0);
+        typeGradient.addColorStop(0, "#eaa7ba");
+        typeGradient.addColorStop(0.55, "#d77b94");
+        typeGradient.addColorStop(1, "#cc6986");
+        roundRect(ctx, W / 2 - 105, 232, 210, 44, 22);
+        ctx.fillStyle = typeGradient;
+        ctx.fill();
+        ctx.fillStyle = "#fff";
+        ctx.font = "500 20px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(type.type, W / 2, 254);
+        ctx.restore();
+
+        // 分数区
+        ctx.save();
+        ctx.textBaseline = "alphabetic";
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#7d5261";
+        ctx.font = "400 19px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+        ctx.fillText("综合得分", 94, 338);
+        ctx.fillStyle = "#9e3e5b";
+        ctx.font = "600 52px \"Songti SC\", \"STSong\", \"Noto Serif CJK SC\", \"SimSun\", serif";
+        ctx.fillText(String(result.score), 94, 393);
+
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#916a78";
+        ctx.font = "400 17px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+        ctx.fillText("击败了", 654, 335);
+        ctx.fillStyle = "#a24761";
+        ctx.font = "600 30px \"Songti SC\", \"STSong\", \"Noto Serif CJK SC\", \"SimSun\", serif";
+        ctx.fillText(result.percent + "%", 654, 377);
+        ctx.fillStyle = "#916a78";
+        ctx.font = "400 17px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+        ctx.fillText("的测试者", 654, 403);
+        ctx.restore();
+
+        // 雷达图
+        const radarCx = 236;
+        const radarCy = 543;
+        const radarRadius = 116;
+        const angles = dimNames.map((_, index) => (-Math.PI / 2) + (index * Math.PI / 3));
+        const radarPoint = (angle, distance) => ({
+          x: radarCx + Math.cos(angle) * distance,
+          y: radarCy + Math.sin(angle) * distance
+        });
+
+        ctx.save();
+        for (let ring = 1; ring <= 4; ring += 1) {
+          ctx.beginPath();
+          angles.forEach((angle, index) => {
+            const p = radarPoint(angle, radarRadius * ring / 4);
+            if (index === 0) ctx.moveTo(p.x, p.y);
+            else ctx.lineTo(p.x, p.y);
+          });
+          ctx.closePath();
+          ctx.strokeStyle = "rgba(193,139,156,.25)";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+
+        angles.forEach((angle) => {
+          const p = radarPoint(angle, radarRadius);
+          ctx.beginPath();
+          ctx.moveTo(radarCx, radarCy);
+          ctx.lineTo(p.x, p.y);
+          ctx.strokeStyle = "rgba(193,139,156,.2)";
+          ctx.stroke();
+        });
+
+        ctx.beginPath();
+        result.dims.forEach((value, index) => {
+          const p = radarPoint(angles[index], radarRadius * value / 100);
+          if (index === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        });
+        ctx.closePath();
+        ctx.fillStyle = "rgba(190,91,118,.2)";
+        ctx.fill();
+        ctx.strokeStyle = "rgba(177,75,104,.68)";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        result.dims.forEach((value, index) => {
+          const p = radarPoint(angles[index], radarRadius * value / 100);
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 3.3, 0, Math.PI * 2);
+          ctx.fillStyle = "#c15b79";
+          ctx.fill();
+          ctx.strokeStyle = "rgba(255,255,255,.94)";
+          ctx.lineWidth = 1.6;
+          ctx.stroke();
+        });
+
+        ctx.fillStyle = "#835363";
+        ctx.font = "400 14px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        angles.forEach((angle, index) => {
+          const p = radarPoint(angle, 147);
+          ctx.fillText(radarLabels[index], p.x, p.y);
+        });
+        ctx.restore();
+
+        // 维度条
+        ctx.save();
+        const barX = 442;
+        const barWidth = 210;
+        const barStart = 455;
+        const barGap = 38;
+        result.dims.forEach((value, index) => {
+          const y = barStart + index * barGap;
+          ctx.textAlign = "left";
+          ctx.textBaseline = "alphabetic";
+          ctx.fillStyle = "#724a5a";
+          ctx.font = "400 15px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+          ctx.fillText(dimNames[index], barX, y);
+          ctx.textAlign = "right";
+          ctx.fillStyle = "#5e3042";
+          ctx.font = "600 16px \"Songti SC\", \"STSong\", \"SimSun\", serif";
+          ctx.fillText(String(value), barX + barWidth, y);
+
+          roundRect(ctx, barX, y + 8, barWidth, 6, 3);
+          ctx.fillStyle = "rgba(249,226,234,.92)";
+          ctx.fill();
+          roundRect(ctx, barX, y + 8, barWidth * value / 100, 6, 3);
+          const barGradient = ctx.createLinearGradient(barX, 0, barX + barWidth, 0);
+          barGradient.addColorStop(0, "#f3c5d2");
+          barGradient.addColorStop(0.62, "#db91a7");
+          barGradient.addColorStop(1, "#ca7690");
+          ctx.fillStyle = barGradient;
+          ctx.fill();
+        });
+        ctx.restore();
+
+        // 关系模式内容卡
+        ctx.save();
+        roundRect(ctx, 68, 686, W - 136, 322, 28);
+        ctx.fillStyle = "rgba(255,255,255,.62)";
+        ctx.fill();
+        ctx.strokeStyle = "rgba(255,255,255,.92)";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.textAlign = "left";
+        ctx.textBaseline = "alphabetic";
+        ctx.fillStyle = "#883d55";
+        ctx.font = "600 27px \"Songti SC\", \"STSong\", \"Noto Serif CJK SC\", \"SimSun\", serif";
+        ctx.fillText("你的关系模式", 98, 731);
+
+        ctx.strokeStyle = "rgba(190,118,139,.22)";
+        ctx.beginPath();
+        ctx.moveTo(258, 720);
+        ctx.lineTo(640, 720);
+        ctx.stroke();
+
+        ctx.fillStyle = "#5e3c49";
+        ctx.font = "400 16px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+        drawWrappedText(ctx, type.summary, 98, 761, 552, 26, 2);
+
+        const miniCards = [
+          { title: "核心优势", body: type.advantage },
+          { title: "主要短板", body: type.weakness },
+          { title: "行动建议", body: type.advice }
+        ];
+        const cardStartX = 94;
+        const cardWidth = 174;
+        const cardGap = 12;
+        miniCards.forEach((card, index) => {
+          const x = cardStartX + index * (cardWidth + cardGap);
+          roundRect(ctx, x, 827, cardWidth, 118, 15);
+          ctx.fillStyle = "rgba(255,255,255,.56)";
+          ctx.fill();
+          ctx.strokeStyle = "rgba(250,230,236,.9)";
+          ctx.stroke();
+
+          ctx.fillStyle = "#9e5b71";
+          ctx.font = "600 15px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+          ctx.fillText(card.title, x + 14, 855);
+          ctx.fillStyle = "#5b3946";
+          ctx.font = "400 15px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+          drawWrappedText(ctx, card.body, x + 14, 882, cardWidth - 28, 24, 3);
+        });
+
+        // 适合类型
+        ctx.fillStyle = "#9d6653";
+        ctx.font = "500 14px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+        ctx.textAlign = "left";
+        ctx.fillText("合适的爱人类型", 98, 976);
+        const matches = type.matches;
+        matches.forEach((match, index) => {
+          const x = 96 + index * 181;
+          roundRect(ctx, x, 989, 166, 32, 16);
+          ctx.fillStyle = "rgba(255,255,255,.62)";
+          ctx.fill();
+          ctx.strokeStyle = "rgba(255,255,255,.9)";
+          ctx.stroke();
+          ctx.fillStyle = "#5d3948";
+          ctx.font = "400 15px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+          ctx.textAlign = "center";
+          ctx.fillText(match, x + 83, 1010);
+        });
+        ctx.restore();
+
+        // 底部文案
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#996173";
+        ctx.font = "400 16px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+        ctx.fillText("✦  " + type.slogan, W / 2, 1048);
+        ctx.fillStyle = "rgba(154,117,130,.72)";
+        ctx.font = "400 13px " + getComputedStyle(document.documentElement).getPropertyValue("--sans");
+        ctx.fillText("娱乐测评仅供参考 · 不替代专业心理咨询", W / 2, 1079);
+        ctx.restore();
+
+        return canvas;
+      }
+
+      function dataUrlToBlob(dataUrl) {
+        const parts = dataUrl.split(",");
+        const mimeMatch = parts[0].match(/:(.*?);/);
+        const mime = mimeMatch ? mimeMatch[1] : "image/png";
+        const binary = atob(parts[1]);
+        const array = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i += 1) {
+          array[i] = binary.charCodeAt(i);
+        }
+        return new Blob([array], { type: mime });
+      }
+
+      function getShareText() {
+        if (!latestResult) return "我的爱情短板测试结果，快来测测你的关系模式吧。";
+        return "我的爱情短板测试结果是「" + latestResult.type.type + "」。" + latestResult.type.shareLine + " 你也来测测你的爱情短板吧～";
+      }
+
+      async function openShare() {
+        if (!latestResult) return;
+        const type = latestResult.type;
+        const text = getShareText();
+        const title = "我的爱情短板测试结果｜" + type.type;
+        latestShareText = text;
+
+        let dataUrl = "";
+        let canvas = null;
+        try {
+          canvas = drawSharePoster(latestResult);
+          dataUrl = canvas.toDataURL("image/png");
+          latestShareDataUrl = dataUrl;
+        } catch (error) {
+          console.warn("海报生成失败", error);
+        }
+
+        // 优先系统分享，让分享图片进入手机相册/微信
+        if (canvas && dataUrl) {
+          try {
+            const file = new File([dataUrlToBlob(dataUrl)], "我的爱情短板测试报告.png", { type: "image/png" });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+              await navigator.share({ title, text, files: [file] });
+              showToast("已打开系统分享");
+              return;
+            }
+          } catch (error) {
+            if (error && error.name === "AbortError") return;
+            // 系统分享失败时静默降级到弹层
+          }
+        }
+
+        openShareModal(dataUrl, text);
+      }
+
+      function getShareCopyPreviewText(text) {
+        latestShareCopyPreview = text;
+        if (shareCopyPreview) {
+          shareCopyPreview.textContent = "✨ " + text;
+        }
+      }
+
+      function openShareModal(dataUrl, text) {
+        lastFocusedElement = document.activeElement;
+        getShareCopyPreviewText(text);
+        if (dataUrl) {
+          shareImg.src = dataUrl;
+          shareImg.hidden = false;
+          shareNotice.hidden = true;
+          downloadReport.href = dataUrl;
+          downloadReport.hidden = false;
+        } else {
+          shareImg.removeAttribute("src");
+          shareImg.hidden = true;
+          shareNotice.hidden = false;
+          downloadReport.hidden = true;
+        }
+        shareModal.hidden = false;
+        document.body.classList.add("modal-open");
+        requestAnimationFrame(() => {
+          modalClose.focus({ preventScroll: true });
+        });
+      }
+
+      function closeShareModal() {
+        if (shareModal.hidden) return;
+        shareModal.hidden = true;
+        document.body.classList.remove("modal-open");
+        const focusTarget = lastFocusedElement && document.contains(lastFocusedElement)
+          ? lastFocusedElement
+          : shareBtn;
+        focusTarget.focus({ preventScroll: true });
+      }
+
+      async function copyTextToClipboard(text) {
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            return true;
+          }
+        } catch (error) {
+          // 继续使用兼容方案
+        }
+
+        try {
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.setAttribute("readonly", "");
+          textarea.style.position = "fixed";
+          textarea.style.top = "-9999px";
+          textarea.style.opacity = "0";
+          document.body.appendChild(textarea);
+          textarea.select();
+          const success = document.execCommand("copy");
+          textarea.remove();
+          return success;
+        } catch (error) {
+          return false;
+        }
+      }
+
+      function showToast(message) {
+        window.clearTimeout(toastTimer);
+        toast.textContent = message;
+        toast.classList.add("is-visible");
+        toastTimer = window.setTimeout(() => {
+          toast.classList.remove("is-visible");
+        }, 2200);
+      }
+
+      function handleCopyShareText() {
+        const text = latestShareText || getShareText();
+        copyTextToClipboard(text).then((success) => {
+          showToast(success ? "分享文案已复制" : "复制失败，请手动选择文案");
+        });
+      }
+
+      // 事件绑定
+      startBtn.addEventListener("click", startQuiz);
+      continueBtn.addEventListener("click", handleContinue);
+      restartBtn.addEventListener("click", restartTest);
+      shareBtn.addEventListener("click", openShare);
+      modalClose.addEventListener("click", closeShareModal);
+      copyShareText.addEventListener("click", handleCopyShareText);
+
+      optionList.addEventListener("click", (event) => {
+        const button = event.target.closest(".option");
+        if (!button) return;
+        chooseOption(Number(button.getAttribute("data-index")));
+      });
+
+      shareModal.addEventListener("click", (event) => {
+        if (event.target.closest("[data-close-modal]")) {
+          closeShareModal();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !shareModal.hidden) {
+          closeShareModal();
+        }
+      });
+
+      totalNumber.textContent = String(questions.length);
+    })();
+  </script>
+</body>
+</html>
